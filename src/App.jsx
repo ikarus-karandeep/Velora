@@ -111,7 +111,7 @@ export default function App() {
           {/* Replace this with actual iframe link */}
           <iframe 
             id="ikarus-configurator"
-            src="https://beta-viewer.ikarusdelta.com/product/v6?id=7297558a-933d-4040-9e8c-662e09018a2d" 
+            src="https://beta-viewer.ikarusdelta.com/product/v6?id=cc42abcb-f527-4225-a836-355ab4176d32" 
             title="3D Viewer"
             className="w-full h-full border-0 bg-transparent rounded-xl pointer-events-auto"
             sandbox="allow-scripts allow-same-origin"
