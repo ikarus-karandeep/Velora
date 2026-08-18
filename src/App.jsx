@@ -11,6 +11,14 @@ export default function App() {
     woodFinish: true
   });
 
+  const [selectedConfig, setSelectedConfig] = useState({
+    layout: 'Straight',
+    fabricMaterial: 'Linen',
+    fabricColor: 'Warm Taupe',
+    legStyle: 'Tapered',
+    woodFinish: 'Natural Walnut'
+  });
+
   const layoutRef = useRef(null);
   const fabricRef = useRef(null);
   const legRef = useRef(null);
@@ -24,6 +32,37 @@ export default function App() {
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  // Map internal state keys to the URL Keys defined in the Ikarus Editor Addons panel
+  // Update the values below if your editor URL Keys are different.
+  const URL_KEYS = {
+    layout: 'layout', 
+    fabricMaterial: 'fabric material',
+    fabricColor: 'fabric color',
+    legStyle: 'leg style',
+    woodFinish: 'wood finish'
+  };
+
+  const sendConfiguration = (configToSend) => {
+    const iframe = document.getElementById('ikarus-configurator');
+    if (iframe && iframe.contentWindow) {
+      const formattedConfig = {};
+      Object.keys(configToSend).forEach(key => {
+        formattedConfig[URL_KEYS[key]] = configToSend[key];
+      });
+
+      iframe.contentWindow.postMessage({
+        type: 'IKARUS_CONFIG',
+        config: formattedConfig
+      }, '*');
+    }
+  };
+
+  const handleOptionSelect = (category, optionName) => {
+    const newConfig = { ...selectedConfig, [category]: optionName };
+    setSelectedConfig(newConfig);
+    sendConfiguration(newConfig);
   };
 
   return (
@@ -71,10 +110,12 @@ export default function App() {
         <div className="w-full h-full flex items-center justify-center p-1">
           {/* Replace this with actual iframe link */}
           <iframe 
-            src="https://beta-viewer.ikarusdelta.com/product/v6?id=cc42abcb-f527-4225-a836-355ab4176d32" 
+            id="ikarus-configurator"
+            src="https://beta-viewer.ikarusdelta.com/product/v6?id=7297558a-933d-4040-9e8c-662e09018a2d" 
             title="3D Viewer"
             className="w-full h-full border-0 bg-transparent rounded-xl pointer-events-auto"
             sandbox="allow-scripts allow-same-origin"
+            onLoad={() => sendConfiguration(selectedConfig)}
           />
         </div>
 
@@ -126,7 +167,11 @@ export default function App() {
                     { name: 'Corner', image: '/Corner.png' },
                     { name: 'Special', image: '/Special.png' },
                   ].map((layout, i) => (
-                    <div key={i} className="relative flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 hover:border-gray-300 bg-white transition-all h-[75px] lg:h-[105px] group shadow-sm hover:shadow-md cursor-pointer">
+                    <div 
+                      key={i} 
+                      onClick={() => handleOptionSelect('layout', layout.name)}
+                      className={`relative flex flex-col items-center justify-center p-2 rounded-xl border ${selectedConfig.layout === layout.name ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-200 hover:border-gray-300'} bg-white transition-all h-[75px] lg:h-[105px] group shadow-sm hover:shadow-md cursor-pointer`}
+                    >
                       <img src={layout.image} alt={layout.name} className="w-10 h-10 lg:w-16 lg:h-16 object-contain mb-1 transition-transform group-hover:scale-110" />
                       <span className="text-[11px] lg:text-[12px] font-normal text-gray-700 text-center leading-none mt-1">{layout.name}</span>
                       <div className="absolute inset-0 z-10"></div>
@@ -161,7 +206,11 @@ export default function App() {
                     { name: 'Corduroy', image: '/Corduroy.png' },
                     { name: 'Velvet', image: '/Velvet.png' },
                   ].map((material, i) => (
-                    <div key={i} className="relative flex flex-col items-center justify-end h-[60px] rounded-[30px] border border-gray-200 transition-all overflow-hidden group shadow-sm hover:shadow-md cursor-pointer">
+                    <div 
+                      key={i} 
+                      onClick={() => handleOptionSelect('fabricMaterial', material.name)}
+                      className={`relative flex flex-col items-center justify-end h-[60px] rounded-[30px] border ${selectedConfig.fabricMaterial === material.name ? 'border-gray-800 ring-2 ring-gray-800' : 'border-gray-200'} transition-all overflow-hidden group shadow-sm hover:shadow-md cursor-pointer`}
+                    >
                       <img src={material.image} alt={material.name} className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105" />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
                       <span className="relative text-[11px] text-white font-medium z-10 text-shadow-sm leading-tight text-center pb-2 drop-shadow-md">{material.name}</span>
@@ -190,7 +239,11 @@ export default function App() {
                     { name: 'Forest Olive', image: '/Forest Olive.png' },
                     { name: 'Graphite', image: '/Graphite.png' },
                   ].map((color, i) => (
-                    <div key={i} className="relative flex flex-col items-center justify-end p-2 rounded-xl border border-gray-200 transition-all h-[75px] lg:h-[105px] overflow-hidden group shadow-sm hover:shadow-md cursor-pointer">
+                    <div 
+                      key={i} 
+                      onClick={() => handleOptionSelect('fabricColor', color.name)}
+                      className={`relative flex flex-col items-center justify-end p-2 rounded-xl border ${selectedConfig.fabricColor === color.name ? 'border-gray-800 ring-2 ring-gray-800' : 'border-gray-200'} transition-all h-[75px] lg:h-[105px] overflow-hidden group shadow-sm hover:shadow-md cursor-pointer`}
+                    >
                       <img src={color.image} alt={color.name} className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105" />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
                       <span className="relative text-[11px] lg:text-[12px] font-normal text-white z-10 text-shadow-sm text-center leading-none px-1 drop-shadow-md pb-1">{color.name}</span>
@@ -226,7 +279,11 @@ export default function App() {
                   { name: 'Turned', image: '/Turned.png' },
                   { name: 'Low Profile', image: '/Low Profile.png' },
                 ].map((leg, i) => (
-                  <div key={i} className="relative flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 hover:border-gray-300 bg-white transition-all h-[75px] lg:h-[105px] group shadow-sm hover:shadow-md cursor-pointer">
+                  <div 
+                    key={i} 
+                    onClick={() => handleOptionSelect('legStyle', leg.name)}
+                    className={`relative flex flex-col items-center justify-center p-2 rounded-xl border ${selectedConfig.legStyle === leg.name ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-200 hover:border-gray-300'} bg-white transition-all h-[75px] lg:h-[105px] group shadow-sm hover:shadow-md cursor-pointer`}
+                  >
                     <img src={leg.image} alt={leg.name} className="w-10 h-10 lg:w-16 lg:h-16 object-contain mb-1 transition-transform group-hover:scale-110" />
                     <span className="text-[11px] lg:text-[12px] font-normal text-gray-700 text-center leading-none mt-1">{leg.name}</span>
                     <div className="absolute inset-0 z-10"></div>
@@ -255,7 +312,11 @@ export default function App() {
                   { name: 'Natural Oak', image: '/Natural Oak.png' },
                   { name: 'Smoked Oak', image: '/Smoked Oak.png' },
                 ].map((finish, i) => (
-                  <div key={i} className="relative flex flex-col items-center justify-end p-2 rounded-xl border border-gray-200 transition-all h-[75px] lg:h-[105px] overflow-hidden group shadow-sm hover:shadow-md cursor-pointer">
+                  <div 
+                    key={i} 
+                    onClick={() => handleOptionSelect('woodFinish', finish.name)}
+                    className={`relative flex flex-col items-center justify-end p-2 rounded-xl border ${selectedConfig.woodFinish === finish.name ? 'border-gray-800 ring-2 ring-gray-800' : 'border-gray-200'} transition-all h-[75px] lg:h-[105px] overflow-hidden group shadow-sm hover:shadow-md cursor-pointer`}
+                  >
                     <img src={finish.image} alt={finish.name} className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105" />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors"></div>
                     <span className="relative text-[11px] lg:text-[12px] font-normal text-white z-10 text-shadow-sm text-center leading-none px-1 drop-shadow-md pb-1">{finish.name}</span>
