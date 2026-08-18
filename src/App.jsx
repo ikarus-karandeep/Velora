@@ -16,7 +16,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-50 text-gray-900 font-sans overflow-hidden">
+    <div className="flex flex-col md:flex-row h-screen bg-white text-gray-900 font-sans overflow-hidden">
       
       {/* LEFT: Viewer Area */}
       <div className="relative flex-1 bg-white flex flex-col items-center justify-center m-2 rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -85,16 +85,16 @@ export default function App() {
         </div>
       </div>
 
-      {/* RIGHT: Sidebar Configurator */}
-      <div className="w-full md:w-[500px] bg-white flex flex-col z-20 m-2 ml-0 rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+      {/* RIGHT PANEL: Configurator Sidebar */}
+      <div className="w-full md:w-[408px] flex flex-col z-20 m-2 ml-0 gap-3">
         
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-4 pb-0 space-y-4 no-scrollbar">
+        <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3">
           
           {/* Card 1: Layouts & Upholstery Fabric */}
-          <div className="bg-[#f9f8f6] rounded-2xl p-5">
+          <div className="bg-[#f8f6f4] rounded-2xl p-6 shadow-sm">
             {/* Layouts Section */}
-            <div className="mb-6">
+            <div>
               <h2 className="text-[18px] font-medium mb-4 text-gray-900">Layouts</h2>
               <div 
                 className="flex justify-between items-center mb-4 cursor-pointer"
@@ -114,7 +114,7 @@ export default function App() {
                     { name: 'Corner', image: '/Corner.png' },
                     { name: 'Special', image: '/Special.png' },
                   ].map((layout, i) => (
-                    <button key={i} className="flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 hover:border-gray-300 bg-white transition-all aspect-square group shadow-sm hover:shadow-md">
+                    <button key={i} className="flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 hover:border-gray-300 bg-white transition-all h-[105px] group shadow-sm hover:shadow-md">
                       <img src={layout.image} alt={layout.name} className="w-16 h-16 object-contain mb-1 transition-transform group-hover:scale-110 mix-blend-multiply" />
                       <span className="text-[12px] font-normal text-gray-700 text-center leading-none mt-1">{layout.name}</span>
                     </button>
@@ -122,7 +122,10 @@ export default function App() {
                 </div>
               )}
             </div>
+          </div>
 
+          {/* Card 2: Upholstery Fabric */}
+          <div className="bg-[#f8f6f4] rounded-2xl p-6 shadow-sm">
             {/* Upholstery Fabric Section */}
             <div>
               <h2 className="text-[18px] font-medium mb-4 text-gray-900">Upholstery Fabric</h2>
@@ -173,7 +176,7 @@ export default function App() {
                     { name: 'Forest Olive', image: '/Forest Olive.png' },
                     { name: 'Graphite', image: '/Graphite.png' },
                   ].map((color, i) => (
-                    <button key={i} className="relative flex flex-col items-center justify-end p-2 rounded-xl border border-gray-200 transition-all aspect-square overflow-hidden group shadow-sm hover:shadow-md">
+                    <button key={i} className="relative flex flex-col items-center justify-end p-2 rounded-xl border border-gray-200 transition-all h-[105px] overflow-hidden group shadow-sm hover:shadow-md">
                       <img src={color.image} alt={color.name} className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105" />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
                       <span className="relative text-[12px] font-normal text-white z-10 text-shadow-sm text-center leading-none px-1 drop-shadow-md pb-1">{color.name}</span>
@@ -183,8 +186,12 @@ export default function App() {
               )}
             </div>
 
+          </div>
+
+          {/* Card 3: Leg & Finish */}
+          <div className="bg-[#f8f6f4] rounded-2xl p-6 shadow-sm">
             {/* Leg & Finish Section */}
-            <div className="mt-8">
+            <div>
               <h2 className="text-[18px] font-medium mb-4 text-gray-900">Leg & Finish</h2>
              <div 
                className="flex justify-between items-center mb-4 cursor-pointer"
@@ -204,7 +211,7 @@ export default function App() {
                   { name: 'Turned', image: '/Turned.png' },
                   { name: 'Low Profile', image: '/Low Profile.png' },
                 ].map((leg, i) => (
-                  <button key={i} className="flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 hover:border-gray-300 bg-white transition-all aspect-square group shadow-sm hover:shadow-md">
+                  <button key={i} className="flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 hover:border-gray-300 bg-white transition-all h-[105px] group shadow-sm hover:shadow-md">
                     <img src={leg.image} alt={leg.name} className="w-16 h-16 object-contain mb-1 transition-transform group-hover:scale-110 mix-blend-multiply" />
                     <span className="text-[12px] font-normal text-gray-700 text-center leading-none mt-1">{leg.name}</span>
                   </button>
@@ -232,7 +239,7 @@ export default function App() {
                   { name: 'Natural Oak', image: '/Natural Oak.png' },
                   { name: 'Smoked Oak', image: '/Smoked Oak.png' },
                 ].map((finish, i) => (
-                  <button key={i} className="relative flex flex-col items-center justify-end p-2 rounded-xl border border-gray-200 transition-all aspect-square overflow-hidden group shadow-sm hover:shadow-md">
+                  <button key={i} className="relative flex flex-col items-center justify-end p-2 rounded-xl border border-gray-200 transition-all h-[105px] overflow-hidden group shadow-sm hover:shadow-md">
                     <img src={finish.image} alt={finish.name} className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105" />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors"></div>
                     <span className="relative text-[12px] font-normal text-white z-10 text-shadow-sm text-center leading-none px-1 drop-shadow-md pb-1">{finish.name}</span>
@@ -243,13 +250,10 @@ export default function App() {
             </div>
           </div>
           
-          {/* Spacer to ensure you can scroll fully past the last card without clipping */}
-          <div className="h-4 w-full flex-shrink-0"></div>
         </div>
 
-        {/* Card 3: Sticky Footer */}
-        <div className="px-4 pb-4 bg-white z-10">
-          <div className="p-5 bg-[#f9f8f6] rounded-2xl">
+        {/* Card 4: Sticky Footer */}
+        <div className="p-5 bg-[#f9f8f6] rounded-2xl shadow-sm flex-shrink-0">
             <div className="mb-4">
               <div className="text-[26px] font-normal leading-none text-gray-900">$2,499</div>
               <div className="text-[15px] font-normal leading-none text-gray-600 mt-1">Total Price incl. Taxes</div>
@@ -263,7 +267,6 @@ export default function App() {
               <button className="flex-1 px-4 py-3.5 bg-[#222222] hover:bg-black text-[#ECE8DE] rounded-xl text-[18px] font-medium leading-none shadow-sm transition-colors">
                 Add to cart
               </button>
-            </div>
           </div>
         </div>
 
