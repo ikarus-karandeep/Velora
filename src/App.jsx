@@ -7,17 +7,17 @@ export default function App() {
     layout: true,
     fabricMaterial: true,
     fabricColor: true,
-    legStyle: true,
     woodFinish: true
   });
 
   const [selectedConfig, setSelectedConfig] = useState({
-    layout: 'Straight',
+    layout: '2 Seater',
     fabricMaterial: 'Linen',
-    fabricColor: 'Warm Taupe',
-    legStyle: 'Tapered',
+    fabricColor: 'Linen_Warm Taupe',
     woodFinish: 'Natural Walnut'
   });
+
+  const [activeLayoutCategory, setActiveLayoutCategory] = useState('Straight');
 
   const layoutRef = useRef(null);
   const fabricRef = useRef(null);
@@ -40,27 +40,163 @@ export default function App() {
     layout: 'layout', 
     fabricMaterial: 'fabric material',
     fabricColor: 'fabric color',
-    legStyle: 'leg style',
     woodFinish: 'wood finish'
   };
+
+  const layoutCategories = [
+    { 
+      name: 'Straight', image: '/Straight.png',
+      options: ['2 Seater', '3 Seater', '4 Seater', 'Loveseat']
+    },
+    { 
+      name: 'L- Shape', image: '/L- Shape left.png',
+      options: ['Left Chaise', 'Right Chaise', 'L- Shape left', 'L- Shape right', 'Double Chaise']
+    },
+    { 
+      name: 'U Shape', image: '/U Shape.png', 
+      options: ['U- Shape', 'U Ottoman'] 
+    },
+    { 
+      name: 'Ottoman', image: '/Ottoman.png', 
+      options: ['Sofa + Ottoman', 'Centre Ottoman', 'Left Ottoman', 'Right Ottoman', 'U Ottoman'] 
+    },
+    // { 
+    //   name: 'Corner', image: '/Corner.png', 
+    //   options: ['Angle + Corner', 'Corner + Armless'] 
+    // },
+    { 
+      name: 'Special', image: '/Special.png', 
+      options: ['Open end left', 'Open end right', 'Modular 3 piece', 'Modular 4 piece', 'Conversational', 'Curved'] 
+    }
+  ];
 
   const sendConfiguration = (configToSend) => {
     const iframe = document.getElementById('ikarus-configurator');
     if (iframe && iframe.contentWindow) {
       const formattedConfig = {};
       Object.keys(configToSend).forEach(key => {
-        formattedConfig[URL_KEYS[key]] = configToSend[key];
+        if (URL_KEYS[key]) {
+          if (key === 'layout') {
+            formattedConfig[URL_KEYS[key]] = configToSend[key];
+          } else {
+            formattedConfig[URL_KEYS[key]] = configToSend[key];
+          }
+        }
       });
+
+      console.log('--- DEBUG: Sending Config to Ikarus ---');
+      console.log('Raw State:', configToSend);
+      console.log('Formatted Payload being sent:', formattedConfig);
 
       iframe.contentWindow.postMessage({
         type: 'IKARUS_CONFIG',
         config: formattedConfig
       }, '*');
+    } else {
+      console.warn('--- DEBUG: Iframe not found or not ready ---');
     }
   };
 
+  const fabricColorOptions = {
+    default: [
+      { name: 'Warm Taupe', image: '/Warm Taupe.png' },
+      { name: 'Mocha Brown', image: '/Mocha Brown.png' },
+      { name: 'Charcoal Brown', image: '/Charcoal Brown.png' },
+      { name: 'Olive Taupe', image: '/Olive Taupe.png' },
+      { name: 'Forest Olive', image: '/Forest Olive.png' },
+      { name: 'Graphite', image: '/Graphite.png' },
+    ],
+    Leather: [
+      { name: 'Leather_Rust Terracota', image: 'icons/Leather_Rust Terracotta.webp' },
+      { name: 'Leather_Saddle Brown', image: 'icons/Leather_Mocha Brown.webp' },
+      { name: 'Leather_Sage Green', image: 'icons/Leather_Sage Green.webp' },
+      { name: 'Leather_Sand Beige', image: 'icons/Leather_Sand Biege.webp' },
+      { name: 'Leather_Sapphire Mist', image: 'icons/Leather_Deep Blue.webp' },
+      { name: 'Leather_Warm Taupe', image: 'icons/Leather_Warm Taupe.webp' },
+    ],
+    Velvet: [
+      { name: 'Velvet_Rust Terracota', image: 'icons/Velvet_Rust Terracotta.webp' },
+      { name: 'Velvet_Warm Taupe', image: 'icons/Velvet_Warm Taupe.webp' },
+      { name: 'Velvet_Saddle Brown', image: 'icons/Velvet_Mocha Brown.webp' },
+      { name: 'Velvet_Sage Green', image: 'icons/Velvet_Sage Green.webp' },
+      { name: 'Velvet_Sand Beige', image: 'icons/Velvet_Sand Biege.webp' },
+      { name: 'Velvet_Sapphire Mist', image: 'icons/Velvet_Deep Blue.webp' },
+    ],
+    Linen: [
+      { name: 'Linen_Rust Terracota', image: 'icons/Linen_Rust Terracotta.webp' },
+      { name: 'Linen_Warm Taupe', image: 'icons/Linen_Warm Taupe.webp' },
+      { name: 'Linen_Saddle Brown', image: 'icons/Linen_Mocha Brown.webp' },
+      { name: 'Linen_Sage Green', image: 'icons/Linen_Sage Green.webp' },
+      { name: 'Linen_Sand Beige', image: 'icons/Linen_Sand Biege.webp' },
+      { name: 'Linen_Sapphire Mist', image: 'icons/Linen_Deep Blue.webp' },
+    ],
+    Boucle: [
+      { name: 'Boucle_Rust Terracota', image: 'icons/Boucle_Rust Terracotta.webp' },
+      { name: 'Boucle_Warm Taupe', image: 'icons/Boucle_Warm Taupe.webp' },
+      { name: 'Boucle_Saddle Brown', image: 'icons/Boucle_Mocha Brown.webp' },
+      { name: 'Boucle_Sage Green', image: 'icons/Boucle_Sage Green.webp' },
+      { name: 'Boucle_Sand Beige', image: 'icons/Boucle_Sand Biege.webp' },
+      { name: 'Boucle_Sapphire Mist', image: 'icons/Boucle_Deep Blue.webp' },
+    ],
+    Suede: [
+      { name: 'Suede_Rust Terracota', image: '/icons/Suede_Rust Terracotta.webp' },
+      { name: 'Suede_Warm Taupe', image: 'icons/Suede_Warm Taupe.webp' },
+      { name: 'Suede_Saddle Brown', image: 'icons/Suede_Mocha Brown.webp' },
+      { name: 'Suede_Sage Green', image: 'icons/Suede_Sage Green.webp' },
+      { name: 'Suede_Sand Beige', image: 'icons/Suede_Sand Biege.webp' },
+      { name: 'Suede_Sapphire Mist', image: 'icons/Suede_Deep Blue.webp' },
+    ],
+    Corduroy: [
+      { name: 'Corduroy_Rust Terracota', image: 'icons/Corduroy_Rust Terracotta.webp' },
+      { name: 'Corduroy_Warm Taupe', image: 'icons/Corduroy_Warm Taupe.webp' },
+      { name: 'Corduroy_Saddle Brown', image: 'icons/Corduroy_Mocha Brown.webp' },
+      { name: 'Corduroy_Sage Green', image: 'icons/Corduroy_Sage Green.webp' },
+      { name: 'Corduroy_Sand Beige', image: 'icons/Corduroy_Sand Biege.webp' },
+      { name: 'Corduroy_Sapphire Mist', image: 'icons/Corduroy_Deep Blue.webp' },
+    ]
+  };
+
+
+
+  const renderSubmenu = (categoryName) => {
+    const category = layoutCategories.find(c => c.name === categoryName);
+    if (!category) return null;
+    const index = layoutCategories.findIndex(c => c.name === categoryName);
+    const col = index % 3;
+    let caretClass = '';
+    if (col === 0) caretClass = 'left-[16.6%]';
+    if (col === 1) caretClass = 'left-[50%]';
+    if (col === 2) caretClass = 'left-[83.3%]';
+
+    return (
+      <div className="mt-3 bg-white p-3 rounded-xl shadow-sm relative z-10 w-full animate-in fade-in slide-in-from-top-2">
+        <div className={`absolute -top-2 w-4 h-4 bg-white transform rotate-45 -translate-x-1/2 ${caretClass}`}></div>
+        <div className="relative z-10 grid grid-cols-2 gap-2">
+          {category.options.map((opt, i) => (
+            <button 
+              key={i}
+              onClick={() => handleOptionSelect('layout', opt)}
+              className={`py-2 px-3 text-[13px] rounded-lg transition-colors border-none ${selectedConfig.layout === opt ? 'bg-[#373737] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const currentColors = fabricColorOptions[selectedConfig.fabricMaterial] || fabricColorOptions.default;
+
   const handleOptionSelect = (category, optionName) => {
     const newConfig = { ...selectedConfig, [category]: optionName };
+    
+    // Auto-select first color if material changes
+    if (category === 'fabricMaterial') {
+      const colors = fabricColorOptions[optionName] || fabricColorOptions.default;
+      newConfig.fabricColor = colors[0].name;
+    }
+
     setSelectedConfig(newConfig);
     sendConfiguration(newConfig);
   };
@@ -158,25 +294,54 @@ export default function App() {
               </div>
               
               {expandedSections.layout && (
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { name: 'Straight', image: '/Straight.png' },
-                    { name: 'L- Shape left', image: '/L- Shape left.png' },
-                    { name: 'U Shape', image: '/U Shape.png' },
-                    { name: 'Ottoman', image: '/Ottoman.png' },
-                    { name: 'Corner', image: '/Corner.png' },
-                    { name: 'Special', image: '/Special.png' },
-                  ].map((layout, i) => (
-                    <div 
-                      key={i} 
-                      onClick={() => handleOptionSelect('layout', layout.name)}
-                      className={`relative flex flex-col items-center justify-center p-2 rounded-xl border ${selectedConfig.layout === layout.name ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-200 hover:border-gray-300'} bg-white transition-all h-[75px] lg:h-[105px] group shadow-sm hover:shadow-md cursor-pointer`}
-                    >
-                      <img src={layout.image} alt={layout.name} className="w-10 h-10 lg:w-16 lg:h-16 object-contain mb-1 transition-transform group-hover:scale-110" />
-                      <span className="text-[11px] lg:text-[12px] font-normal text-gray-700 text-center leading-none mt-1">{layout.name}</span>
-                      <div className="absolute inset-0 z-10"></div>
-                    </div>
-                  ))}
+                <div className="flex flex-col">
+                  {/* Top Row */}
+                  <div className="grid grid-cols-3 gap-3">
+                    {layoutCategories.slice(0, 3).map((category, i) => (
+                      <div 
+                        key={i} 
+                        onClick={() => {
+                          if (activeLayoutCategory === category.name) {
+                            setActiveLayoutCategory(null);
+                          } else {
+                            setActiveLayoutCategory(category.name);
+                            handleOptionSelect('layout', category.options[0]);
+                          }
+                        }}
+                        className={`relative flex flex-col items-center justify-center p-2 rounded-xl border ${activeLayoutCategory === category.name ? 'border-[#373737] bg-[#4a4a4a] text-white shadow-md' : 'border-gray-200 hover:border-gray-300 bg-white text-gray-700'} transition-all h-[75px] lg:h-[105px] group cursor-pointer`}
+                      >
+                        <img src={category.image} alt={category.name} className={`w-10 h-10 lg:w-16 lg:h-16 object-contain mb-1 transition-transform group-hover:scale-110`} />
+                        <span className={`text-[11px] lg:text-[12px] font-normal text-center leading-none mt-1`}>{category.name}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Submenu for top row */}
+                  {activeLayoutCategory && layoutCategories.slice(0, 3).find(c => c.name === activeLayoutCategory) && renderSubmenu(activeLayoutCategory)}
+
+                  {/* Bottom Row */}
+                  <div className="grid grid-cols-3 gap-3 mt-3">
+                    {layoutCategories.slice(3, 6).map((category, i) => (
+                      <div 
+                        key={i} 
+                        onClick={() => {
+                          if (activeLayoutCategory === category.name) {
+                            setActiveLayoutCategory(null);
+                          } else {
+                            setActiveLayoutCategory(category.name);
+                            handleOptionSelect('layout', category.options[0]);
+                          }
+                        }}
+                        className={`relative flex flex-col items-center justify-center p-2 rounded-xl border ${activeLayoutCategory === category.name ? 'border-[#373737] bg-[#4a4a4a] text-white shadow-md' : 'border-gray-200 hover:border-gray-300 bg-white text-gray-700'} transition-all h-[75px] lg:h-[105px] group cursor-pointer`}
+                      >
+                        <img src={category.image} alt={category.name} className={`w-10 h-10 lg:w-16 lg:h-16 object-contain mb-1 transition-transform group-hover:scale-110`} />
+                        <span className={`text-[11px] lg:text-[12px] font-normal text-center leading-none mt-1`}>{category.name}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Submenu for bottom row */}
+                  {activeLayoutCategory && layoutCategories.slice(3, 6).find(c => c.name === activeLayoutCategory) && renderSubmenu(activeLayoutCategory)}
                 </div>
               )}
             </div>
@@ -229,16 +394,9 @@ export default function App() {
                 <ChevronUp className={`w-5 h-5 transition-transform ${expandedSections.fabricColor ? '' : 'rotate-180'}`} />
               </div>
               
-              {expandedSections.fabricColor && (
+               {expandedSections.fabricColor && (
                 <div className="grid grid-cols-3 gap-3">
-                   {[
-                    { name: 'Warm Taupe', image: '/Warm Taupe.png' },
-                    { name: 'Mocha Brown', image: '/Mocha Brown.png' },
-                    { name: 'Charcoal Brown', image: '/Charcoal Brown.png' },
-                    { name: 'Olive Taupe', image: '/Olive Taupe.png' },
-                    { name: 'Forest Olive', image: '/Forest Olive.png' },
-                    { name: 'Graphite', image: '/Graphite.png' },
-                  ].map((color, i) => (
+                   {currentColors.map((color, i) => (
                     <div 
                       key={i} 
                       onClick={() => handleOptionSelect('fabricColor', color.name)}
@@ -246,7 +404,7 @@ export default function App() {
                     >
                       <img src={color.image} alt={color.name} className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105" />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                      <span className="relative text-[11px] lg:text-[12px] font-normal text-white z-10 text-shadow-sm text-center leading-none px-1 drop-shadow-md pb-1">{color.name}</span>
+                      <span className="relative text-[11px] lg:text-[12px] font-normal text-white z-10 text-shadow-sm text-center leading-none px-1 drop-shadow-md pb-1">{color.name.replace(`${selectedConfig.fabricMaterial}_`, '')}</span>
                     </div>
                   ))}
                 </div>
@@ -261,38 +419,7 @@ export default function App() {
             <div>
               <h2 className="text-[18px] font-medium mb-4 text-gray-900">Leg & Finish</h2>
               <hr className="border-gray-200 my-6" />
-             <div 
-               className="flex justify-between items-center mb-4 cursor-pointer"
-               onClick={() => toggleSection('legStyle')}
-             >
-              <h3 className="text-[15px] font-normal uppercase">Leg Style</h3>
-              <ChevronUp className={`w-5 h-5 transition-transform ${expandedSections.legStyle ? '' : 'rotate-180'}`} />
-            </div>
-            
-            {expandedSections.legStyle && (
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                {[
-                  { name: 'Tapered', image: '/Tapered.png' },
-                  { name: 'Round', image: '/Round.png' },
-                  { name: 'Slim', image: '/Slim.png' },
-                  { name: 'Block', image: '/Block.png' },
-                  { name: 'Turned', image: '/Turned.png' },
-                  { name: 'Low Profile', image: '/Low Profile.png' },
-                ].map((leg, i) => (
-                  <div 
-                    key={i} 
-                    onClick={() => handleOptionSelect('legStyle', leg.name)}
-                    className={`relative flex flex-col items-center justify-center p-2 rounded-xl border ${selectedConfig.legStyle === leg.name ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-200 hover:border-gray-300'} bg-white transition-all h-[75px] lg:h-[105px] group shadow-sm hover:shadow-md cursor-pointer`}
-                  >
-                    <img src={leg.image} alt={leg.name} className="w-10 h-10 lg:w-16 lg:h-16 object-contain mb-1 transition-transform group-hover:scale-110" />
-                    <span className="text-[11px] lg:text-[12px] font-normal text-gray-700 text-center leading-none mt-1">{leg.name}</span>
-                    <div className="absolute inset-0 z-10"></div>
-                  </div>
-                ))}
-              </div>
-            )}
 
-            <hr className="border-gray-200 my-6" />
 
             <div 
               className="flex justify-between items-center mb-4 cursor-pointer"
@@ -344,7 +471,7 @@ export default function App() {
                 <span>Summary</span>
                 <ChevronUp className="w-4 h-4 lg:w-5 lg:h-5 text-gray-500" />
               </button>
-              <button className="flex-1 px-3 lg:px-4 py-2.5 lg:py-3.5 bg-[#222222] hover:bg-black text-[#ECE8DE] rounded-xl text-[15px] lg:text-[18px] font-medium leading-none shadow-sm transition-colors">
+              <button className="flex-1 px-3 lg:px-4 py-2.5 lg:py-3.5 bg-[#373737] hover:bg-black text-[#ECE8DE] rounded-xl text-[15px] lg:text-[18px] font-medium leading-none shadow-sm transition-colors">
                 Add to cart
               </button>
           </div>
