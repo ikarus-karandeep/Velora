@@ -64,10 +64,10 @@ export default function App() {
     //   name: 'Corner', image: '/Corner.png', 
     //   options: ['Angle + Corner', 'Corner + Armless'] 
     // },
-    { 
-      name: 'Special', image: '/Special.png', 
-      options: ['Open end left', 'Open end right', 'Modular 3 piece', 'Modular 4 piece', 'Conversational', 'Curved'] 
-    }
+    // { 
+    //   name: 'Special', image: '/Special.png', 
+    //   options: ['Open end left', 'Open end right', 'Modular 3 piece', 'Modular 4 piece', 'Conversational', 'Curved'] 
+    // }
   ];
 
   const sendConfiguration = (configToSend) => {
