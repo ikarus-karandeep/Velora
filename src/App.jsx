@@ -66,7 +66,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row fixed inset-0 bg-white text-gray-900 font-sans overflow-hidden p-2 gap-2 lg:p-2 lg:gap-2">
+    <div className="flex flex-col lg:flex-row fixed inset-0 bg-white text-gray-900 font-sans overflow-hidden p-2 gap-3 lg:p-2 lg:gap-2">
       
       {/* LEFT: Viewer Area */}
       <div className="relative flex-1 lg:h-full lg:flex-1 min-h-0 bg-white flex flex-col items-center justify-center rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
