@@ -66,7 +66,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row fixed inset-0 bg-white text-gray-900 font-sans overflow-hidden">
+    <div className="flex flex-col lg:flex-row fixed inset-0 bg-white text-gray-900 font-sans overflow-hidden lg:p-2 lg:gap-2">
       
       {/* LEFT: Viewer Area */}
       <div className="relative h-1/2 lg:h-full lg:flex-1 min-h-0 bg-white flex flex-col items-center justify-center rounded-none lg:rounded-2xl shadow-none lg:shadow-sm border-0 lg:border lg:border-gray-100 overflow-hidden">
@@ -107,7 +107,7 @@ export default function App() {
         </div>
 
         {/* Iframe for 3D Viewer */}
-        <div className="w-full h-full flex items-center justify-center p-1">
+        <div className="w-full h-full flex items-center justify-center">
           {/* Replace this with actual iframe link */}
           <iframe 
             id="ikarus-configurator"
@@ -137,7 +137,7 @@ export default function App() {
       </div>
 
       {/* RIGHT PANEL: Configurator Sidebar */}
-      <div className="w-full h-1/2 lg:h-full lg:w-[408px] lg:flex-none min-h-0 flex flex-col z-20 p-4 lg:p-0 lg:m-2 lg:ml-0 gap-3 overflow-hidden">
+      <div className="w-full h-1/2 lg:h-full lg:w-[408px] lg:flex-none min-h-0 flex flex-col z-20 p-4 lg:p-0 gap-3 overflow-hidden">
         
         {/* Scrollable Content */}
         <div className="flex-1 min-h-0 overflow-y-auto pb-4 lg:pb-0 no-scrollbar">
