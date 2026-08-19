@@ -66,10 +66,10 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row fixed inset-0 bg-white text-gray-900 font-sans overflow-hidden lg:p-2 lg:gap-2">
+    <div className="flex flex-col lg:flex-row fixed inset-0 bg-white text-gray-900 font-sans overflow-hidden p-2 gap-2 lg:p-2 lg:gap-2">
       
       {/* LEFT: Viewer Area */}
-      <div className="relative h-1/2 lg:h-full lg:flex-1 min-h-0 bg-white flex flex-col items-center justify-center rounded-none lg:rounded-2xl shadow-none lg:shadow-sm border-0 lg:border lg:border-gray-100 overflow-hidden">
+      <div className="relative flex-1 lg:h-full lg:flex-1 min-h-0 bg-white flex flex-col items-center justify-center rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         {/* Branding */}
         {/* <div className="absolute top-6 left-6 flex items-center space-x-2 z-10">
           <div className="text-xl font-bold tracking-tight flex items-center">
@@ -98,8 +98,8 @@ export default function App() {
                 alt={tab.alt} 
                 className={`object-contain transition-all duration-200 ${
                   activeTab === tab.id 
-                    ? 'w-7 h-7 opacity-100' 
-                    : 'w-6 h-6 opacity-60 group-hover:opacity-100'
+                    ? 'w-10 h-10 opacity-100' 
+                    : 'w-10 h-10 opacity-60 group-hover:opacity-100'
                 }`} 
               />
             </button>
@@ -137,10 +137,10 @@ export default function App() {
       </div>
 
       {/* RIGHT PANEL: Configurator Sidebar */}
-      <div className="w-full h-1/2 lg:h-full lg:w-[408px] lg:flex-none min-h-0 flex flex-col z-20 p-4 lg:p-0 gap-3 overflow-hidden">
+      <div className="w-full flex-1 lg:h-full lg:w-[408px] lg:flex-none min-h-0 flex flex-col z-20 gap-3 overflow-hidden">
         
         {/* Scrollable Content */}
-        <div className="flex-1 min-h-0 overflow-y-auto pb-4 lg:pb-0 no-scrollbar">
+        <div className="flex-1 rounded-2xl min-h-0 overflow-y-auto pb-4 lg:pb-0 no-scrollbar">
           <div className="flex flex-col gap-3">
           
           {/* Card 1: Layouts */}
