@@ -231,7 +231,7 @@ export default function App() {
               onClick={() => scrollToSection(tab.id)}
               className={`w-12 h-12 rounded-[10px] transition-all flex items-center justify-center ${
                 activeTab === tab.id 
-                  ? 'bg-[#e4dfd9]' 
+                  ? 'bg-[#4a4a4a] shadow-md' 
                   : 'bg-white hover:bg-gray-50 shadow-sm'
               }`}
             >
@@ -240,7 +240,7 @@ export default function App() {
                 alt={tab.alt} 
                 className={`object-contain transition-all duration-200 ${
                   activeTab === tab.id 
-                    ? 'w-10 h-10 opacity-100' 
+                    ? 'w-10 h-10 opacity-100 brightness-0 invert' 
                     : 'w-10 h-10 opacity-60 group-hover:opacity-100'
                 }`} 
               />
