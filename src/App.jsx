@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
-import { ChevronUp, Undo, Redo, RotateCcw, Maximize, Sofa, Columns, Disc, Layers } from "lucide-react";
+import { ChevronUp, Undo, Redo, RotateCcw, Maximize, Sofa, Columns, Disc, Layers, X, Edit2 } from "lucide-react";
 
 export default function App() {
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('layout');
   const [expandedSections, setExpandedSections] = useState({
     layout: true,
@@ -188,6 +189,11 @@ export default function App() {
 
   const currentColors = fabricColorOptions[selectedConfig.fabricMaterial] || fabricColorOptions.default;
 
+  const getSelectedColorImage = () => {
+    const colorObj = currentColors.find(c => c.name === selectedConfig.fabricColor);
+    return colorObj ? colorObj.image : '';
+  };
+
   const handleOptionSelect = (category, optionName) => {
     const newConfig = { ...selectedConfig, [category]: optionName };
     
@@ -275,6 +281,12 @@ export default function App() {
       {/* RIGHT PANEL: Configurator Sidebar */}
       <div className="w-full flex-1 lg:h-full lg:w-[408px] lg:flex-none min-h-0 flex flex-col z-20 gap-3 overflow-hidden">
         
+        {/* Top Header Card */}
+        <div className="bg-[#f8f6f4] rounded-2xl p-4 lg:p-5 shadow-sm flex-shrink-0">
+          <h1 className="text-[20px] lg:text-[22px] font-medium text-gray-900">Sectional Sofa</h1>
+          <p className="text-[14px] lg:text-[15px] text-gray-500 mt-1">78" x 37"</p>
+        </div>
+
         {/* Scrollable Content */}
         <div className="flex-1 rounded-2xl min-h-0 overflow-y-auto pb-4 lg:pb-0 no-scrollbar">
           <div className="flex flex-col gap-3">
@@ -467,7 +479,10 @@ export default function App() {
             </div>
             
             <div className="flex space-x-2 lg:space-x-3">
-              <button className="flex-1 flex justify-between items-center px-3 lg:px-4 py-2.5 lg:py-3.5 bg-white border border-gray-300 hover:bg-gray-50 rounded-xl text-[15px] lg:text-[18px] font-medium leading-none transition-colors">
+              <button 
+                onClick={() => setIsSummaryOpen(true)}
+                className="flex-1 flex justify-between items-center px-3 lg:px-4 py-2.5 lg:py-3.5 bg-white border border-gray-300 hover:bg-gray-50 rounded-xl text-[15px] lg:text-[18px] font-medium leading-none transition-colors"
+              >
                 <span>Summary</span>
                 <ChevronUp className="w-4 h-4 lg:w-5 lg:h-5 text-gray-500" />
               </button>
@@ -479,6 +494,131 @@ export default function App() {
 
       </div>
 
+      {isSummaryOpen && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex flex-col lg:flex-row justify-end items-end p-2 lg:p-2 gap-2 animate-in fade-in duration-200">
+          <div className="w-full lg:w-[408px] flex flex-col gap-2 max-h-full animate-in slide-in-from-bottom-8 lg:slide-in-from-right-8 duration-300">
+            
+            {/* Top Scrollable Content */}
+            <div className="bg-[#f8f6f4] rounded-[24px] shadow-2xl flex flex-col overflow-hidden min-h-0 relative">
+              <div className="p-6 overflow-y-auto no-scrollbar">
+                <button 
+                  onClick={() => setIsSummaryOpen(false)}
+                  className="absolute top-6 right-6 w-8 h-8 bg-gray-200/60 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors z-10"
+                >
+                  <X className="w-4 h-4 text-gray-700" />
+                </button>
+                
+                <h2 className="text-[20px] font-medium text-gray-900 mb-8 pr-10">Configuration Summary</h2>
+                
+                <div className="space-y-6">
+                  {/* SOFA MODEL */}
+                  <div>
+                    <h3 className="text-[12px] text-gray-700 mb-3 uppercase tracking-wider">Sofa Model</h3>
+                    <div className="flex items-center gap-4">
+                      <img src="/L- Shape left.png" alt="Sofa" className="w-24 h-16 object-contain mix-blend-multiply" />
+                      <div>
+                        <div className="text-[16px] text-gray-900 font-normal">Sectional Sofa</div>
+                        <div className="text-[14px] text-gray-400">78" x 37"</div>
+                        <div className="text-[14px] text-gray-400">$1,500</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <hr className="border-gray-200" />
+
+                  {/* LAYOUT */}
+                  <div>
+                    <h3 className="text-[12px] text-gray-700 mb-3 uppercase tracking-wider">Layout</h3>
+                    <div className="flex items-center justify-between group">
+                      <div className="flex items-center gap-4">
+                        <div className="w-20 h-20 bg-white border border-gray-200 rounded-xl flex items-center justify-center p-2">
+                           <img src="/L- Shape left.png" alt="Layout" className="w-full h-full object-contain mix-blend-multiply" />
+                        </div>
+                        <div>
+                          <div className="text-[16px] text-gray-900 font-normal">{selectedConfig.layout}</div>
+                          <div className="text-[14px] text-gray-400">Included</div>
+                        </div>
+                      </div>
+                      <button onClick={() => {setIsSummaryOpen(false); scrollToSection('layout');}} className="p-2 text-gray-400 hover:text-gray-900 transition-colors">
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <hr className="border-gray-200" />
+
+                  {/* UPHOLSTERY FABRIC */}
+                  <div>
+                    <h3 className="text-[12px] text-gray-700 mb-3 uppercase tracking-wider">Upholstery Fabric</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between group">
+                        <div className="flex items-center gap-4">
+                          <div className="w-20 h-10 rounded-full overflow-hidden">
+                            <img src={`/${selectedConfig.fabricMaterial}.png`} alt={selectedConfig.fabricMaterial} className="w-full h-full object-cover" />
+                          </div>
+                          <div>
+                            <div className="text-[16px] text-gray-900 font-normal">Material: {selectedConfig.fabricMaterial}</div>
+                            <div className="text-[14px] text-gray-400">$143</div>
+                          </div>
+                        </div>
+                        <button onClick={() => {setIsSummaryOpen(false); scrollToSection('fabricMaterial');}} className="p-2 text-gray-400 hover:text-gray-900 transition-colors">
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center justify-between group">
+                        <div className="flex items-center gap-4">
+                          <div className="w-20 h-10 rounded-full overflow-hidden">
+                            <img src={getSelectedColorImage()} alt={selectedConfig.fabricColor} className="w-full h-full object-cover" />
+                          </div>
+                          <div>
+                            <div className="text-[16px] text-gray-900 font-normal">Color: {selectedConfig.fabricColor.replace(`${selectedConfig.fabricMaterial}_`, '')}</div>
+                            <div className="text-[14px] text-gray-400">+$193</div>
+                          </div>
+                        </div>
+                        <button onClick={() => {setIsSummaryOpen(false); scrollToSection('fabricColor');}} className="p-2 text-gray-400 hover:text-gray-900 transition-colors">
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr className="border-gray-200" />
+
+                  {/* WOOD FINISH */}
+                  <div>
+                    <h3 className="text-[12px] text-gray-700 mb-3 uppercase tracking-wider">Wood Finish</h3>
+                    <div className="flex items-center justify-between group">
+                      <div className="flex items-center gap-4">
+                        <div className="w-20 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                          <img src={`/${selectedConfig.woodFinish}.png`} alt={selectedConfig.woodFinish} className="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                          <div className="text-[16px] text-gray-900 font-normal">{selectedConfig.woodFinish}</div>
+                        </div>
+                      </div>
+                      <button onClick={() => {setIsSummaryOpen(false); scrollToSection('woodFinish');}} className="p-2 text-gray-400 hover:text-gray-900 transition-colors">
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Sticky Price Footer */}
+            <div className="p-6 bg-white rounded-[24px] shadow-[0_-4px_10px_rgba(0,0,0,0.02)] flex-shrink-0">
+              <div className="mb-4">
+                <div className="text-[26px] font-normal leading-none text-gray-900">$2,499</div>
+                <div className="text-[14px] font-normal leading-none text-gray-600 mt-2">Total Price incl. Taxes</div>
+              </div>
+              <button className="w-full py-4 bg-[#373737] hover:bg-black text-[#ECE8DE] rounded-xl text-[16px] font-medium leading-none shadow-sm transition-colors">
+                Add to cart
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
